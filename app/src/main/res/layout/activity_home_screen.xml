@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeScreenActivity">
+
+    <!-- Material Toolbar at the top -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        android:elevation="4dp"
+        app:title="Home Screen"
+        android:titleTextColor="@color/black"
+        app:popupTheme="@style/MyPopupMenu"
+        app:menu="@menu/tool_bar_menu" />
+
+    <!-- Content below the Toolbar (Buttons) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topAppBar"
+        android:padding="16dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contacts_button"
+            android:gravity="center"
+            android:text="Contacts" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Health Department"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/contacts_button"
+            android:id="@+id/health_department_button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/police_button"
+            android:text="Police"
+            android:layout_below="@id/health_department_button"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/safe_routes"
+            android:text="SafeRoutes"
+            android:layout_below="@id/police_button"
+            android:layout_marginTop="10dp" />
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

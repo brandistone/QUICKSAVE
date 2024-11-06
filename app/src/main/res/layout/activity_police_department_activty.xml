@@ -1,0 +1,28 @@
+<!-- res/layout/activity_police_department.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+        <Button
+            android:id="@+id/find_police_station_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Find Nearest Police Stations" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/police_station_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+</LinearLayout>
+
+
+
