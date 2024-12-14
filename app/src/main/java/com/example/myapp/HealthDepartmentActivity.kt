@@ -15,18 +15,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import com.example.myapp.api.FoursquareApi
+import com.example.myapp.models.FoursquareResponse
 
 class HealthDepartmentActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var findHospitalButton: Button
-    private lateinit var api: NominatimApi
     private lateinit var progressBar: ProgressBar
     private lateinit var hospitalRecyclerView: RecyclerView
+    private lateinit var api: FoursquareApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +42,11 @@ class HealthDepartmentActivity : AppCompatActivity() {
 
         // Initialize Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://nominatim.openstreetmap.org/")
+            .baseUrl("https://api.foursquare.com/v3/places/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        api = retrofit.create(NominatimApi::class.java)
+        api = retrofit.create(FoursquareApi::class.java)
 
         // Set RecyclerView layout manager
         hospitalRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -72,50 +74,43 @@ class HealthDepartmentActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
         hospitalRecyclerView.visibility = View.GONE // Hide the list while loading
 
-        val query = "hospital near ${latLng.latitude},${latLng.longitude}"
+        val latLngString = "${latLng.latitude},${latLng.longitude}"
+        val query = "hospital"
+        val apiKey = "fsq3Wre39Ss+KtfemSWHYErY9wk4lzq2D8J833FeYCyVK3I=" // Replace with your actual Foursquare API key
 
-        // Call the API to get hospital locations
-        api.searchLocation(query).enqueue(object : Callback<List<LocationResult>> {
-            override fun onResponse(
-                call: Call<List<LocationResult>>,
-                response: Response<List<LocationResult>>
-            ) {
-                progressBar.visibility = View.GONE
-
-                if (response.isSuccessful) {
-                    val locations = response.body()
-                    if (!locations.isNullOrEmpty()) {
-                        // Set up the adapter with the hospital data
-                        val hospitalAdapter = HospitalAdapter(locations)
-                        hospitalRecyclerView.adapter = hospitalAdapter
-                        hospitalRecyclerView.visibility = View.VISIBLE // Show the list
-
-                        // Now, send the user's location to the hospitals
-                        sendLocationToHospitals(latLng.latitude, latLng.longitude)
+        api.searchPlaces(apiKey, "application/json", query, latLngString)
+            .enqueue(object : Callback<FoursquareResponse> {
+                override fun onResponse(
+                    call: Call<FoursquareResponse>,
+                    response: Response<FoursquareResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val results = response.body()?.results
+                        // Handle successful response
                     } else {
-                        Toast.makeText(this@HealthDepartmentActivity, "No hospitals found.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@HealthDepartmentActivity,
+                            "Error: ${response.code()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(this@HealthDepartmentActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
-            }
 
-            override fun onFailure(call: Call<List<LocationResult>>, t: Throwable) {
-                progressBar.visibility = View.GONE
-                t.printStackTrace()
-                Toast.makeText(this@HealthDepartmentActivity, "Failed to fetch hospitals", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onFailure(call: Call<FoursquareResponse>, t: Throwable) {
+                    Toast.makeText(
+                        this@HealthDepartmentActivity,
+                        "Failed to fetch hospitals",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+
     }
 
-    // Method to send the user's location to the hospitals
     private fun sendLocationToHospitals(latitude: Double, longitude: Double) {
-        // Example hospital contact numbers (can be replaced with dynamic contact data)
         val hospitalContacts = listOf("1234567890", "0987654321") // Add actual hospital contact numbers here
-
         val message = "Emergency: A user at Latitude: $latitude, Longitude: $longitude needs assistance."
 
-        // Send the location via SMS to each hospital
         for (contact in hospitalContacts) {
             sendSms(contact, message)
         }
@@ -123,13 +118,11 @@ class HealthDepartmentActivity : AppCompatActivity() {
         Toast.makeText(this, "Location sent to hospitals.", Toast.LENGTH_SHORT).show()
     }
 
-    // Method to send SMS to a hospital contact
     private fun sendSms(contact: String, message: String) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
             val smsManager = SmsManager.getDefault()
             smsManager.sendTextMessage(contact, null, message, null, null)
         } else {
-            // Request SMS permission if not granted
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), 2)
         }
     }
@@ -144,10 +137,7 @@ class HealthDepartmentActivity : AppCompatActivity() {
             }
         } else if (requestCode == 2) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Retry sending SMS after permission is granted
-                val latitude = 0.0 // Replace with actual latitude
-                val longitude = 0.0 // Replace with actual longitude
-                sendLocationToHospitals(latitude, longitude)
+                Toast.makeText(this, "SMS permission granted.", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "SMS permission denied.", Toast.LENGTH_SHORT).show()
             }
