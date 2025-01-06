@@ -53,13 +53,16 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0") // Logging interceptor for OkHttp
 
     // Optional: For location services
-    implementation("com.google.android.gms:play-services-location:21.0.1") // Google Play services for location
-    implementation ("com.google.android.gms:play-services-maps:18.0.2") // Check for the latest version
+//    implementation("com.google.android.gms:play-services-location:21.0.1") // Google Play services for location
+//    implementation ("com.google.android.gms:play-services-maps:18.0.2") // Check for the latest version
     implementation ("org.osmdroid:osmdroid-android:6.1.11")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.google.firebase:firebase-messaging:23.0.0")
-    implementation ("com.google.firebase:firebase-analytics:21.0.0")
+//    implementation ("com.google.firebase:firebase-messaging:23.0.0")
+//    implementation ("com.google.firebase:firebase-analytics:21.0.0")
+    implementation ("com.azure.android:azure-maps-control:1.0.0-beta.1")
+    implementation ("com.azure.android:azure-maps-auth:1.0.0-beta.1")
+
 
 
 

@@ -5,6 +5,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+        <com.azure.maps.control.AzureMapView
+            android:id="@+id/azureMapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
         <Button
             android:id="@+id/find_police_station_button"
             android:layout_width="match_parent"
