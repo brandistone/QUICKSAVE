@@ -2,17 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-<!--    <uses-permission android:name="android.permission.CALL_PHONE" />-->
-<!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- <uses-permission android:name="android.permission.CALL_PHONE" /> -->
+    <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-<!--    <meta-data-->
-<!--        android:name="com.azure.android.maps.subscriptionKey"-->
-<!--        android:value="" />-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp"
         tools:targetApi="31">
+        <activity
+            android:name=".SpeechRecognitionHelper"
+            android:exported="false" />
 
         <meta-data
             android:name="com.azure.android.maps.subscriptionKey"

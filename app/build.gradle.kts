@@ -61,6 +61,12 @@ dependencies {
 //    implementation ("com.google.firebase:firebase-messaging:23.0.0")
 //    implementation ("com.google.firebase:firebase-analytics:21.0.0")
 
+    implementation ("com.google.mlkit:entity-extraction:18.0.0")
+    implementation ("com.google.mlkit:text-recognition:16.0.0")
+    implementation ("com.google.mlkit:speech-recognition:17.0.1")
+
+    // Make sure you have the ML Kit common dependency
+    implementation ("com.google.android.gms:play-services-mlkit-text-recognition:18.0.2")
 
 
 
